@@ -2,13 +2,16 @@
 
 > Effortlessly keep vue-router and vuex store in sync.
 
-**Note:** requires `vuex>=0.6.2`.
-
 ### Usage
 
 ``` bash
+# for use with vue-router < 2.0:
 npm install vuex-router-sync
+
+# for vuex & vue-router >= 2.0:
+npm install vuex-router-sync@next
 ```
+
 ``` js
 import { sync } from 'vuex-router-sync'
 import store from './vuex/store' // vuex store instance

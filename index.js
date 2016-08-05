@@ -62,7 +62,9 @@ function patchStore (store) {
   }
 
   // add module
-  if (store.module) {
+  if (store.registerModule) {
+    store.registerModule('route', routeModule)
+  } else if (store.module) {
     store.module('route', routeModule)
   } else {
     store.hotUpdate({
