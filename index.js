@@ -12,12 +12,12 @@ exports.sync = function (store, router) {
       return state.route
     },
     function (route) {
-      if (route.path === currentPath) {
+      if (route.to.path === currentPath) {
         return
       }
       isTimeTraveling = true
-      currentPath = route.path
-      router.go(route.path)
+      currentPath = route.to.path
+      router.go(route.to.path)
     },
     { deep: true, sync: true }
   )
@@ -29,8 +29,9 @@ exports.sync = function (store, router) {
       return
     }
     var to = transition.to
+    var from = transition.from || null;
     currentPath = to.path
-    commit('router/ROUTE_CHANGED', to)
+    commit('router/ROUTE_CHANGED', to, from)
   })
 }
 
@@ -47,16 +48,24 @@ function patchStore (store) {
   var set = store._vm.constructor.set
   applyMutationState(store, true);
   set(store.state, 'route', {
-    path: '',
-    query: null,
-    params: null
+    to: {
+      path: '',
+      query: null,
+      params: null
+    },
+    from: {
+      path: '',
+      query: null,
+      params: null
+    }
   })
   applyMutationState(store, false);
 
   var routeModule = {
     mutations: {
-      'router/ROUTE_CHANGED': function (state, to) {
-        store.state.route = to
+      'router/ROUTE_CHANGED': function (state, to, from) {
+        store.state.route.to = to
+        store.state.route.to = from
       }
     }
   }
